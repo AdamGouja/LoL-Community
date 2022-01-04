@@ -1,14 +1,17 @@
 import pandas as pd
-import twint
+import tweepy
+import json
 
-twint_c = twint.Config()
-twint_c.Search = ['LOL']
-twint_c.Limit = 500
-twint_c.Store_csv = True
-twint_c.Output = "data/lol_tweet.csv"
+keys = json.load(open('./keys.json'))
+auth = tweepy.OAuthHandler(keys['key'], keys['secret_key'])
+auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
-twint.run.Search(twint_c)
+api = tweepy.API(auth)
 
+
+public_tweets = api.home_timeline()
+for tweet in public_tweets:
+    print(tweet.text)
 
 ## Trouver des mots clefs
 ## Recuperer les tweets 
