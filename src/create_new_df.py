@@ -1,7 +1,3 @@
-from warnings import catch_warnings
-import pandas as pd
-from langdetect import detect
-
 def create_new_df(df):
     df1 = df_tweet_tag(df)
     df2 = df_tweet_user(df)
