@@ -2,8 +2,6 @@ from traceback import print_tb
 import pandas as pd
 import os
 
-path_to_csv = "data.csv"
-
 def get_data_from_csv(csv_name):
     """Creates a dataframe from a csv
 

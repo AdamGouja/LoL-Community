@@ -20,12 +20,12 @@ def twitter_scrapping(id_list, last_date):
         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(to_search + ' since:' + last_date).get_items()):
             nb_actual+=1            
             if(nb_actual%200==0):
-                print("En cours :" + str(nb_actual))
+                print("En cours : " + str(nb_actual))
             if tweet.id not in id_list :
                 id_list.append(tweet.id)
                 all_tags = add_all_tags(tweet.user.username + tweet.content)
                 for tag in all_tags:
-                    tweets_dict[nb_tweet] = {"id" : tweet.id, "date" : tweet.date.date(), "content" :tweet.content, "like" : tweet.likeCount, "reply" : tweet.replyCount, "retweet" : (tweet.retweetCount + tweet.quoteCount),"username" : tweet.user.username, "tag" : tag}
+                    tweets_dict[nb_tweet] = {"id" : tweet.id, "date" : tweet.date.date(), "content" :tweet.content, "like" : tweet.likeCount, "reply" : tweet.replyCount, "retweet" : int(tweet.retweetCount + tweet.quoteCount),"username" : tweet.user.username, "tag" : tag}
                     nb_tweet+=1
         print(str(nb_actual) + ":" + str(nb_tweet))
         print()

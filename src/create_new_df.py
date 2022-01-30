@@ -1,21 +1,25 @@
+from warnings import catch_warnings
 import pandas as pd
-from search_def import get_all_tags
+from langdetect import detect
 
 def create_new_df(df):
     df1 = df_tweet_tag(df)
-    df2 = df_tweet_lang(df)
-    df3 = df_tweet_user(df)
-    return[df1, df2, df3]
+    df2 = df_tweet_user(df)
+    return[df1, df2]
 
 def df_tweet_tag(df):
-    all_tags = get_all_tags()
-    to_return = pd.DataFrame()    
-    print(to_return)
-
-def df_tweet_lang(df):
-    print("TO DO")
+    print("Tweet and tag dataframe")
+    to_return = df.groupby(["tag", "date"]).count()
+    to_return = to_return.reset_index()
+    to_return = to_return.drop(columns = ["content","like","reply","retweet","username"])
+    return to_return
 
 def df_tweet_user(df):
-    print("TO DO")
-
+    print("Tweet user tag dataframe")
+    to_return = df.drop_duplicates(subset='id', keep="last")
+    to_return = to_return.reset_index()
+    to_return = to_return.drop(columns=["content", "tag", "id"])
+    to_return = to_return.groupby(["username", "date"]).sum()
+    to_return = to_return.reset_index()
+    return to_return
 
