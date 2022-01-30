@@ -4,15 +4,34 @@ import os
 
 path_to_csv = "data.csv"
 
-def get_data_from_csv():
+def get_data_from_csv(csv_name):
+    """Creates a dataframe from a csv
+
+    Args:
+        csv_name (String): Name of the csv file
+
+    Returns:
+        pd.Dataframe: Dataframe from the CSV
+    """
     print("Get data from csv")
-    if(os.path.exists(path_to_csv)):
+    if(os.path.exists(csv_name)):
         print("Data already existing")
-        df = pd.read_csv(path_to_csv, index_col=0)
+        df = pd.read_csv(csv_name, index_col=0)
     else: 
         print("No data found")
         df = pd.DataFrame()
     return df
 
-def get_data_from_mongo():
-    print("TODO from mongo")
+def get_data_from_mongo(db, collection_name):
+    """[summary]
+
+    Args:
+        db (mongo.database): Database
+        collection_name (String): Name of the collection
+
+    Returns:
+        [type]: [description]
+    """
+    col = db[collection_name]
+    df = pd.DataFrame(list(col.find()))
+    return df
