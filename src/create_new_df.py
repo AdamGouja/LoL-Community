@@ -8,10 +8,9 @@ def create_new_df(df):
     return[df1, df2, df3]
 
 def df_tweet_tag(df):
-    all_tags = get_all_tags
-    for tag in df["tag"].values:
-        print(tag)
-
+    all_tags = get_all_tags()
+    to_return = pd.DataFrame()    
+    print(to_return)
 
 def df_tweet_lang(df):
     print("TO DO")

@@ -24,12 +24,10 @@ def main_function():
         last_date = max(dates)
         last_date = datetime.strftime(last_date, "%Y-%m-%d")
         id_list = df[df["date"] == last_date].index.to_list()
-        
-    print(last_date)
-    
-    ##scrapped_df = twitter_scrapping(id_list, last_date)
 
-    ##df = df.append(scrapped_df)
+    scrapped_df = twitter_scrapping(id_list, last_date)
+
+    df = df.append(scrapped_df)
 
     push_data_to_csv(df)
 

@@ -195,7 +195,7 @@ tag_dict = {
                 },
                 "search" : "#ldlcwin"
             },
-            "Vitality B" : {
+            "Vitality Bee" : {
                 "tag" : ["vitality", "vita"],
                 "players" : {
                     "Szygenda" : ["szygenda"],
@@ -270,11 +270,11 @@ def generate_search_list():
                 for player_id in team_players.keys():
                     player_data = team_players[player_id]
                     for tag in player_data:
-                        search = {"tag" : [player_id, team_id, ligue_id], "search" : (tag + " " + team_tag)}
+                        search = {"search" : (tag + " " + team_tag)}
                         list_of_search.append(search)
-            search = {"tag" : [team_id, ligue_id], "search" : team_data["search"]}
+            search = {"search" : team_data["search"]}
             list_of_search.append(search)    
-        search = {"tag" : [ligue_id], "search" : ligue_tag}
+        search = {"search" : ligue_tag}
         list_of_search.append(search)
     return(list_of_search)
 
@@ -291,6 +291,3 @@ def get_all_tags():
             for player_id in team_players.keys():
                 all_tags.add(player_id)
     return all_tags
-
-# for search in generate_search_list(tag_dict):
-#     print(search)
