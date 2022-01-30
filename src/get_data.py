@@ -1,6 +1,9 @@
-from traceback import print_tb
 import pandas as pd
 import os
+import shutil
+
+def unzip_data(filename):
+    shutil.unpack_archive(filename, ".")
 
 def get_data_from_csv(csv_name):
     """Creates a dataframe from a csv

@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 
 from create_new_df import create_new_df
-from get_data import get_data_from_csv, get_data_from_mongo
+from get_data import get_data_from_csv, get_data_from_mongo, unzip_data
 from push_data import push_data_to_csv, push_data_to_mongo
 from scrapping import twitter_scrapping
 
@@ -14,7 +14,8 @@ from scrapping import twitter_scrapping
 path_to_csv = "data.csv"
 
 def main_function():
-    #df = get_data_from_mongo()
+    unzip_data("data.csv.zip")
+
     df = get_data_from_csv(path_to_csv)
     df = df.dropna()
     df = df.astype({"retweet" : int, "like" : int, "reply" : int})
@@ -28,11 +29,8 @@ def main_function():
         last_date = datetime.strftime(last_date, "%Y-%m-%d")
         id_list = df[df["date"] == last_date].index.to_list()
 
-    #scrapped_df = twitter_scrapping(id_list, last_date)
-
-    #df = df.append(scrapped_df)
-
-    push_data_to_csv(df, "data.csv")
+    # scrapped_df = twitter_scrapping(id_list, last_date)
+    # df = df.append(scrapped_df)
 
     df1, df2 = create_new_df(df)
 
@@ -40,3 +38,4 @@ def main_function():
     push_data_to_csv(df2, "df2_data.csv")
 
 main_function()
+

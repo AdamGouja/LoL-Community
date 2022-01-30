@@ -9,6 +9,7 @@ def df_tweet_tag(df):
     to_return = to_return.reset_index()
     to_return = to_return.groupby(["tag", "date"]).count()
     to_return = to_return.drop(columns=["index"])
+    to_return = to_return.rename(columns = {"id" : "count"})
     to_return = to_return.reset_index()
     return to_return
 
@@ -18,7 +19,6 @@ def df_tweet_user(df):
     to_return = to_return.reset_index()
     to_return = to_return.drop(columns=["content", "tag", "id"])
     to_return = to_return.groupby(["username", "date"]).sum()
-    to_return = to_return.drop(columns=["index"])
     to_return = to_return.reset_index()
     return to_return
 
