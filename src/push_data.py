@@ -1,13 +1,31 @@
 import pandas as pd
 import os
+import pymongo
+from pymongo import MongoClient
+import json
 
 path_to_csv = "data.csv"
 
 def push_data_to_csv(df):
+    """Function that creates a csv from the dataframe passed in arguments
+
+    Args:
+        df (pd.Dataframe): Name of the dataframe to push
+    """
     print("Push data to CSV")
     if(os.path.exists(path_to_csv)):
         os.remove("data.csv")
     df.to_csv("data.csv")
 
-def push_data_to_mongo(df):
-    print("TO DO")
+def push_data_to_mongo(df, collection_name):
+    """Function that push the dataframe in arguments into the Mongo collection called "collection_name" in the database "project"
+
+    Args:
+        df (pd.Dataframe): Name of the dataframe to push
+        collection_name (String): Name of the collection where the dataframe should be pushed
+    """
+    client = MongoClient('localhost',27017)
+    db = client.project
+    collection = db[collection_name]
+    data = json.loads(df.T.to_json()).values()
+    collection.insert_many(data)
