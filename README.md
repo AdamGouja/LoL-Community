@@ -1,6 +1,6 @@
 # LOL Community
 
-Clément Maurer & Adam GOuja
+Clément Maurer & Adam Gouja
 
 
 ## Introduction : 
