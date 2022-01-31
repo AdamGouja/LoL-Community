@@ -14,6 +14,8 @@ from scrapping import twitter_scrapping
 path_to_csv = "data.csv"
 
 def main_function():
+    """Main function that get the data from the given zip then scrap and create the simplified dataframe 
+    """
     unzip_data("data.csv.zip")
 
     df = get_data_from_csv(path_to_csv)

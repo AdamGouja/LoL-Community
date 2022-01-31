@@ -1,5 +1,9 @@
 def create_new_df(df):
+    """ Main function that calls the other and create all the needed dataframes
 
+    Args:
+        df ([pandas.Dataframe]): Dataframe containing all the data
+    """
     df["interaction"] = df["like"] + df["retweet"] + df["reply"]
     df = df.drop(columns = ["like","reply","retweet"])
 
@@ -9,6 +13,14 @@ def create_new_df(df):
     return[tweet_tag, tweet_user, tweet_day]
 
 def df_tweet_tag(df):
+    """Generate a dataframe that contains the number of interaction and tweet for a given date and tag
+
+    Args:
+        df ([pandas.Dataframe]): Dataframe containing all the data
+
+    Returns:
+        [pandas.Dataframe]: dataframe returned
+    """
     print("Tweet and tag dataframe")    
     tweet_tag = df.drop(columns = ["username"])
     tweet_tag_final = tweet_tag.drop(columns = ["id"])
@@ -24,6 +36,16 @@ def df_tweet_tag(df):
     return tweet_tag_final
 
 def df_tweet_user(df, nb_users):
+    """ Generate a dataframe that contains the number of interaction of the biggest (nb_users) twitter account.
+    The interactions of all others users are contained as the usernamed "Autres"
+
+    Args:
+        df ([pandas.Dataframe]): dataframe that contains all the data
+        nb_users (int): Nombre d'utilisateur à garder
+
+    Returns:
+        [pandas.Dataframe]: dataframe returned
+    """
     print("Tweet user tag dataframe")
     tweet_data = df.drop_duplicates(subset='id', keep="last")
     tweet_user = tweet_data.drop(columns=["tag", "id", "date"])
@@ -40,6 +62,14 @@ def df_tweet_user(df, nb_users):
     return biggest_users
 
 def df_tweet_day(df):
+    """ Generate a dataframe that contains the number of tweet and interaction of a given day
+
+    Args:
+        df ([pandas.Dataframe]): dataframe that contains all the data
+
+    Returns:
+        [pandas.Dataframe]: dataframe returned
+    """
     print("Tweet per day dataframe")
     tweet_day = df.drop_duplicates(subset='id', keep="last")
     tweet_day = tweet_day.reset_index()
