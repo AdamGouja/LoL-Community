@@ -1,9 +1,8 @@
 # importing libraries and packages
 from datetime import datetime
-import pandas as pd
 
 from create_new_df import create_new_df
-from get_data import get_data_from_csv, get_data_from_mongo, unzip_data
+from get_data import get_data_from_csv, unzip_data
 from push_data import push_data_to_csv, push_data_to_mongo
 from scrapping import twitter_scrapping
 
@@ -39,9 +38,9 @@ def main_function():
 
     df1, df2, df3 = create_new_df(df)
 
-    push_data_to_csv(df1, "df1_data.csv")
-    push_data_to_csv(df2, "df2_data.csv")
-    push_data_to_csv(df3, "df3_data.csv")
+    # push_data_to_csv(df1, "df1_data.csv")
+    # push_data_to_csv(df2, "df2_data.csv")
+    # push_data_to_csv(df3, "df3_data.csv")
 
     push_data_to_mongo(df,'all_data')
     push_data_to_mongo(df1,'tweets_tag')

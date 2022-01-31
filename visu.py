@@ -1,12 +1,10 @@
-from distutils.log import debug
 import dash
 from dash import dcc
 from dash import html
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 
 import plotly.express as px
 import pandas as pd
-import pymongo
 from pymongo import MongoClient
 from datetime import datetime
 import sys

@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 import shutil
-import pymongo
 from pymongo import MongoClient
 
 def unzip_data(filename):

@@ -1,7 +1,4 @@
-from modulefinder import packagePathMap
-import pandas as pd
 import os
-import pymongo
 from pymongo import MongoClient
 import json
 

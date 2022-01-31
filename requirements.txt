@@ -1,6 +1,6 @@
 dash
 json
-os
 pandas
 pymongo
 snscrape
+plotly.express
