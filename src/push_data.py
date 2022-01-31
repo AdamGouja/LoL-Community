@@ -27,8 +27,8 @@ def push_data_to_mongo(df, collection_name):
     db = client.project
     collection_names = db.list_collection_names()
     if collection_name in collection_names:
-        print ("This collection already exists !")
-        pass
+        print ("The collection '"+collection_name+"' already exists !")
+        return
     collection = db[collection_name]
     data = json.loads(df.T.to_json()).values()
     collection.insert_many(data)

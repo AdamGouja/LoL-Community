@@ -25,25 +25,21 @@ def get_data_from_csv(csv_name):
         df = pd.DataFrame()
     return df
 
-def get_data_from_mongo(db, collection_name):
-    """[summary]
+def get_data_from_mongo(collection_name):
+    """Gets the data from le collection called "collection_name" and puts it in a dataframe
 
     Args:
-        db (mongo.database): Database
         collection_name (String): Name of the collection
 
     Returns:
-        [type]: [description]
+        pd.Dataframe: Dataframe of the data in the collection
     """
     client = MongoClient('localhost',27017)
-    dbnames = client.list_database_names()
-    if db not in dbnames:
-        print ("This database doesn't exist !")
-        pass
+    db = client.project
     collection_names = db.list_collection_names()
     if collection_name not in collection_names:
-        print ("This collection doesn't exist !")
-        pass
+        print ("The collection '"+collection_name+"' doesn't exist !")
+        return
     col = db[collection_name]
     df = pd.DataFrame(list(col.find()))
     return df
