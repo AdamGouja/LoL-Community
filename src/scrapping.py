@@ -4,6 +4,16 @@ import pandas as pd
 from search_def import generate_search_list, tag_dict
 
 def twitter_scrapping(id_list, last_date): 
+    """Scrapp all the data about LOL esport on twitter from last_date. 
+    Id_list contains the list of id of the last scrapped day in order to avoid repetitions.
+
+    Args:
+        id_list (list(int)): list of all id already scrapped during the last date of the last scrapping
+        last_date (date(Y-M-D)): last scrapped date
+
+    Returns:
+        [pandas.Dataframe] : dataframe containing all the data scrapped
+    """
     print("Scrapping data since " + last_date + " : ")
     tweets_dict = {}
     nb_tweet = 0
@@ -25,7 +35,7 @@ def twitter_scrapping(id_list, last_date):
                 id_list.append(tweet.id)
                 all_tags = add_all_tags(tweet.user.username + tweet.content)
                 for tag in all_tags:
-                    tweets_dict[nb_tweet] = {"id" : tweet.id, "date" : tweet.date.date(), "content" :tweet.content, "like" : tweet.likeCount, "reply" : tweet.replyCount, "retweet" : int(tweet.retweetCount + tweet.quoteCount),"username" : tweet.user.username, "tag" : tag}
+                    tweets_dict[nb_tweet] = {"id" : tweet.id, "date" : tweet.date.date(), "like" : tweet.likeCount, "reply" : tweet.replyCount, "retweet" : int(tweet.retweetCount + tweet.quoteCount),"username" : tweet.user.username, "tag" : tag}
                     nb_tweet+=1
         print(str(nb_actual) + ":" + str(nb_tweet))
         print()
@@ -37,6 +47,14 @@ def twitter_scrapping(id_list, last_date):
     return tweets_df.T
 
 def add_all_tags(text_to_check):
+    """Generate a list of all the tags of a given tweet
+
+    Args:
+        text_to_check (string): Text to check
+
+    Returns:
+        [list(string)]: List of all the tags detected
+    """
     text_to_check = text_to_check.lower()
     tags = set()
     ligues = tag_dict.keys()

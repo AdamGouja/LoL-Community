@@ -256,6 +256,8 @@ tag_dict = {
 
 
 def generate_search_list():
+    """Generate a list of all the search that the scrapping needs to do
+    """
     list_of_search = []
     ligues = tag_dict.keys()
     for ligue_id in ligues:
@@ -277,17 +279,3 @@ def generate_search_list():
         search = {"search" : ligue_tag}
         list_of_search.append(search)
     return(list_of_search)
-
-def get_all_tags():
-    all_tags = set()
-    for ligue_id in tag_dict.keys():
-        all_tags.add(ligue_id)
-        ligue_data = tag_dict[ligue_id]
-        ligue_teams = ligue_data["teams"]
-        for team_id in ligue_teams.keys():
-            all_tags.add(team_id)
-            team_data = ligue_teams[team_id]
-            team_players = team_data["players"]
-            for player_id in team_players.keys():
-                all_tags.add(player_id)
-    return all_tags
