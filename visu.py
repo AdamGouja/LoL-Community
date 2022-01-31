@@ -9,6 +9,10 @@ import pandas as pd
 import pymongo
 from pymongo import MongoClient
 from datetime import datetime
+# import sys
+# sys.path.insert(0, './src')
+
+# from main import main_function
 
 dict_LFL =  [
     {'label' : 'GamersOrigin', 'value':'Gamers Origin'},
@@ -45,11 +49,16 @@ db = client.project
 
 all_data = db['all_data']
 tag = db['tweets_tag']
-
+i=0
 query = {'$or': [{'tag': 'KCORP'}]}
 
 if __name__ == '__main__':
+    # print("------------------------")
+    # main_function()
+    # print("------------------------$$$$$$$$$$$$$$")
 
+    
+    # print("fin main")
     app = dash.Dash(__name__)
 
     tweets_date = px.line(
@@ -119,7 +128,7 @@ if __name__ == '__main__':
                             #     value = [-1,2]
                             # )
                         ],
-                        hidden = False
+                        hidden = True
                     ),
 
                     html.Div(
@@ -224,24 +233,25 @@ if __name__ == '__main__':
 
     @app.callback(
         Output(component_id="graph_figure", component_property="figure"),
-        [Input(component_id="check_team", component_property="value"),
-        Input(component_id="date_range", component_property="start_date"),
-        Input(component_id="date_range", component_property="end_date")]
+        [Input(component_id="check_team", component_property="value")]
     )
-    def graph_tweet(team, start, end):
-        end_date = end
-        start_date = start
+    def graph_tweet(team):
         if not team:
             team = list_all_values
+
         tags = team
         liste = []
         dic = {}
         for i in tags:
             dic['tag'] = i
             liste.append(dic.copy())
-        Query = {'date':{'$gte':start_date,'$lt':end_date},"$or" : liste}
+        Query = {"$or" : liste}
+        # Query = {'date':{'$gte':start_date,'$lt':end_date},"$or" : liste}
+
+        yes = pd.DataFrame(list(tag.find(Query)))
+
         return px.line(
-            pd.DataFrame(list(tag.find(Query))),
+            yes,
             x='date',
             y='count',
             color='tag'
