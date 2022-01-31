@@ -25,7 +25,7 @@ def twitter_scrapping(id_list, last_date):
                 id_list.append(tweet.id)
                 all_tags = add_all_tags(tweet.user.username + tweet.content)
                 for tag in all_tags:
-                    tweets_dict[nb_tweet] = {"id" : tweet.id, "date" : tweet.date.date(), "content" :tweet.content, "like" : tweet.likeCount, "reply" : tweet.replyCount, "retweet" : int(tweet.retweetCount + tweet.quoteCount),"username" : tweet.user.username, "tag" : tag}
+                    tweets_dict[nb_tweet] = {"id" : tweet.id, "date" : tweet.date.date(), "like" : tweet.likeCount, "reply" : tweet.replyCount, "retweet" : int(tweet.retweetCount + tweet.quoteCount),"username" : tweet.user.username, "tag" : tag}
                     nb_tweet+=1
         print(str(nb_actual) + ":" + str(nb_tweet))
         print()
