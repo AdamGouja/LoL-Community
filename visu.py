@@ -44,12 +44,10 @@ if __name__ == '__main__':
                         id='graph_choice',
                         clearable=False,
                         options=[
-                            {'label': 'Tweets per day', 'value':'time'},
-                            {'label': 'Tweets per language', 'value':'language'},
-                            {'label': 'Tweets by users', 'value':'tweets_users'},
-                            {'label': 'Topic per users', 'value': 'topic'}
+                            {'label': 'Tweets per day', 'value':'tweets'},
+                            {'label': 'Interaction per user', 'value':'interaction'}
                         ],
-                        value='time'
+                        value='tweets'
                     ),
 
                     html.Hr(),
@@ -70,7 +68,8 @@ if __name__ == '__main__':
                                 clearable=False,
                                 value = 'LFL'
                             ),
-                        ]
+                        ],
+                        hidden=False
                     ),                    
 
                     html.Div(
@@ -79,12 +78,13 @@ if __name__ == '__main__':
                             html.H3(children='Date range'),
                             dcc.RangeSlider(
                                 id='date_range',
-                                marks={-1:'14/11/2021',0:'21/12/2021',1:'27/01/2021'},
+                                marks={-1:'14/11/2021',0:'21/12/2021',1:'12/01/2021',2:'30/01/2021'},
                                 min=-1,
-                                max=1,
-                                value = [-1,1]
+                                max=2,
+                                value = [-1,2]
                             )
-                        ]
+                        ],
+                        hidden = False
                     ),
 
                     html.Div(
@@ -93,11 +93,6 @@ if __name__ == '__main__':
                             html.H3(
                                 children='Team(s) Choice'
                             ),
-                            # html.Button(
-                            #     id='check_all_button',
-                            #     children= 'Check/Uncheck all',
-                                
-                            # ),
                             dcc.Checklist(
                                 id="check_all",
                                 options=[{"label": "Check/Uncheck All", "value": "All"}],
@@ -110,7 +105,8 @@ if __name__ == '__main__':
                                 options = dict_LFL,
                                 labelStyle={'display': 'block'}
                             ) 
-                        ]
+                        ],
+                        hidden = False
                     ),
 
                     html.Hr(),
@@ -176,5 +172,16 @@ if __name__ == '__main__':
             return dict_LFL
         else:
             return dict_LEC
+
+    @app.callback(
+        [Output(component_id="check_team_div", component_property="hidden"),
+        Output(component_id="league_choice_div", component_property="hidden")],
+        [Input(component_id="graph_choice", component_property="value")]
+    )
+    def hide(input_value):
+        if input_value == 'interaction':
+            return [True, True]
+        else :
+            return [False, False]
 
     app.run_server(debug=True)
