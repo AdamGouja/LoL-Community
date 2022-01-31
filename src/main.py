@@ -29,6 +29,7 @@ def main_function():
         last_date = datetime.strftime(last_date, "%Y-%m-%d")
         id_list = df[df["date"] == last_date].index.to_list()
 
+    ## Laste date of scrapping by the creators : 30/01/2022
     # scrapped_df = twitter_scrapping(id_list, last_date)
     # df = df.append(scrapped_df)
 
@@ -36,6 +37,10 @@ def main_function():
 
     push_data_to_csv(df1, "df1_data.csv")
     push_data_to_csv(df2, "df2_data.csv")
+
+    push_data_to_mongo(df,'all_data')
+    push_data_to_mongo(df1,'tweets_tag')
+    push_data_to_mongo(df2,'tweets_user')
 
 main_function()
 

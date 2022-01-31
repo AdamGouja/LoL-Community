@@ -25,6 +25,11 @@ def push_data_to_mongo(df, collection_name):
     """
     client = MongoClient('localhost',27017)
     db = client.project
+    collection_names = db.list_collection_names()
+    if collection_name in collection_names:
+        print ("This collection already exists !")
+        pass
     collection = db[collection_name]
     data = json.loads(df.T.to_json()).values()
     collection.insert_many(data)
+    print("The collection '"+collection_name+"' has been added successfully to the database !")
