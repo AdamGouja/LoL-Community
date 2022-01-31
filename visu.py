@@ -9,10 +9,10 @@ import pandas as pd
 import pymongo
 from pymongo import MongoClient
 from datetime import datetime
-# import sys
-# sys.path.insert(0, './src')
+import sys
+sys.path.insert(0, './src')
 
-# from main import main_function
+from main import main_function
 
 dict_LFL =  [
     {'label' : 'GamersOrigin', 'value':'Gamers Origin'},
@@ -44,22 +44,19 @@ list_all_values =  ['Gamers Origin','Gameward','KCORP','LDLC OL','Miage Elyandra
 
 dict_all = dict_LFL+dict_LEC
 
+main_function()
+
 client = MongoClient('localhost',27017)
 db = client.project
 
 all_data = db['all_data']
 tag = db['tweets_tag']
-i=0
+users = db['tweets_user']
+tweets = db["tweets_day"]
 query = {'$or': [{'tag': 'KCORP'}]}
 
 if __name__ == '__main__':
-    # print("------------------------")
-    # main_function()
-    # print("------------------------$$$$$$$$$$$$$$")
-
     
-    # print("fin main")
-    app = dash.Dash(__name__)
 
     tweets_date = px.line(
         pd.DataFrame(list(tag.find(query))),
@@ -67,6 +64,23 @@ if __name__ == '__main__':
         y='count',
         color='tag'
     )
+     
+    users_pie = px.pie(
+        pd.DataFrame(list(users.find())),
+        values='interaction', 
+        names='username', 
+    )
+
+    interaction_per_date = px.line(
+        pd.DataFrame(list(tweets.find())),
+        x='date',
+        y='interaction'
+    )
+
+
+    app = dash.Dash(__name__)
+
+
 
     app.layout = html.Div(
         children=[
@@ -79,7 +93,8 @@ if __name__ == '__main__':
                         clearable=False,
                         options=[
                             {'label': 'Tweets per day', 'value':'tweets'},
-                            {'label': 'Interaction per user', 'value':'interaction'}
+                            {'label': 'Interaction per user', 'value':'interaction'},
+                            {'label': 'Interaction per day', 'value':'interaction_2'}
                         ],
                         value='tweets'
                     ),
@@ -119,14 +134,6 @@ if __name__ == '__main__':
                                 end_date=datetime.strptime('2021-01-30', "%Y-%m-%d").date(),
                                 start_date=datetime.strptime('2021-11-14', "%Y-%m-%d").date(),
                             ),
-                            # dcc.RangeSlider(
-                            #     id='date_range',
-                            #     marks={'14/11/2021','21/12/2021','12/01/2021','30/01/2021'},
-                            #     # min=-1,
-                            #     # max=2,
-                            #     tooltip={"placement": "bottom", "always_visible": True},
-                            #     value = [-1,2]
-                            # )
                         ],
                         hidden = True
                     ),
@@ -137,17 +144,10 @@ if __name__ == '__main__':
                             html.H3(
                                 children='Team(s) Choice'
                             ),
-                            # dcc.Checklist(
-                            #     id="check_all",
-                            #     options=[{"label": "Check/Uncheck All", "value": "All"}],
-                            #     value=[],
-                            #     labelStyle={"display": "inline-block"},
-                            # ),
-                            # html.H3(),
                             dcc.Checklist(
                                 id='check_team',
                                 options = dict_LFL,
-                                # value = ["KCORP"],
+
                                 labelStyle={'display': 'block'}
                             ) 
                         ],
@@ -192,19 +192,6 @@ if __name__ == '__main__':
 
     ###### CALLBACK
 
-    # @app.callback(
-    #     Output(component_id="check_team", component_property="value"),
-    #     [Input(component_id="check_all", component_property="value")],
-    #     [State(component_id="check_team", component_property="options")],
-    # )
-    # def select_all_none(all_selected, options):
-    #     """
-    #     Select or unselect all the choices in the team choices.
-    #     """
-    #     all_or_none = []
-    #     all_or_none = [option["value"] for option in options if all_selected]
-    #     return all_or_none
-
     @app.callback(
         Output(component_id="check_team", component_property="options"),
         [Input(component_id="league_choice", component_property="value")]
@@ -222,20 +209,14 @@ if __name__ == '__main__':
 
     @app.callback(
         [Output(component_id="check_team_div", component_property="hidden"),
-        Output(component_id="league_choice_div", component_property="hidden")],
-        [Input(component_id="graph_choice", component_property="value")]
+        Output(component_id="league_choice_div", component_property="hidden"),
+        Output(component_id="graph_title",component_property="children"),
+        Output(component_id="graph_figure",component_property="figure")],
+        [Input(component_id="graph_choice", component_property="value"),
+        Input(component_id="check_team", component_property="value")]
     )
-    def hide(input_value):
-        if input_value == 'interaction':
-            return [True, True]
-        else :
-            return [False, False]
-
-    @app.callback(
-        Output(component_id="graph_figure", component_property="figure"),
-        [Input(component_id="check_team", component_property="value")]
-    )
-    def graph_tweet(team):
+    def hide_and_title(input_value,team):
+        
         if not team:
             team = list_all_values
 
@@ -246,16 +227,18 @@ if __name__ == '__main__':
             dic['tag'] = i
             liste.append(dic.copy())
         Query = {"$or" : liste}
-        # Query = {'date':{'$gte':start_date,'$lt':end_date},"$or" : liste}
 
-        yes = pd.DataFrame(list(tag.find(Query)))
-
-        return px.line(
-            yes,
+        if input_value == 'interaction':
+            return [True, True, "Most interacted users since the beginning of the Season", users_pie]
+        elif input_value == 'tweets' :
+            return [False, False, "Number of tweets per day per Topic since the beginning of the Season",px.line(
+            pd.DataFrame(list(tag.find(Query))),
             x='date',
             y='count',
             color='tag'
-        )
+        )]
+        else :
+            return [True, True, "Number of interactions per day since the beginning if the Season", interaction_per_date]
 
 
-    app.run_server(debug=True)
+    app.run_server(debug=False)

@@ -47,5 +47,3 @@ def main_function():
     push_data_to_mongo(df1,'tweets_tag')
     push_data_to_mongo(df2,'tweets_user')
     push_data_to_mongo(df3,'tweets_day')
-
-main_function()
