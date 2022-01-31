@@ -22,16 +22,16 @@ def df_tweet_tag(df):
         [pandas.Dataframe]: dataframe returned
     """
     print("Tweet and tag dataframe")    
-    tweet_tag = df.drop(columns = ["username"])
+    tweet_tag = df.drop(columns = ["username",'interaction'])
     tweet_tag_final = tweet_tag.drop(columns = ["id"])
     tweet_tag_final = tweet_tag_final.groupby(["tag", "date"]).sum()
     tweet_tag_final = tweet_tag_final.reset_index()
 
     count = tweet_tag.groupby(["tag", "date"])["id"].count().values
-    interaction = tweet_tag.groupby(["tag", "date"])["interaction"].sum().values
+    # interaction = tweet_tag.groupby(["tag", "date"])["interaction"].sum().values
 
     tweet_tag_final["count"] = count
-    tweet_tag_final["interaction"] = interaction
+    # tweet_tag_final["interaction"] = interaction
     
     return tweet_tag_final
 

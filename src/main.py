@@ -11,11 +11,12 @@ from scrapping import twitter_scrapping
 # Recuperer les données de mongo et reprendre le scrap à partir de la derniere date scrappée 
 # Recuperer la colonne id du df recupéré pour ne pas rescrap certains tweets
 
-path_to_csv = "data.csv"
+
 
 def main_function():
     """Main function that get the data from the given zip then scrap and create the simplified dataframe 
     """
+    path_to_csv = "data.csv"
     unzip_data("data.csv.zip")
 
     df = get_data_from_csv(path_to_csv)
@@ -48,5 +49,3 @@ def main_function():
     push_data_to_mongo(df3,'tweets_day')
 
 main_function()
-
-
