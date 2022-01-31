@@ -15,19 +15,19 @@ def twitter_scrapping(id_list, last_date):
     # Using TwitterSearchScraper to scrape data and append tweets to list
     for search in search_list:
         nb_actual = 0
-        to_search = search["search"]
+        to_search = search["search"]        
         print(str(actual_search) + "/" + str(search_list_len) + ": Beginning of " + to_search)
         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(to_search + ' since:' + last_date).get_items()):
-            nb_actual+=1
-            nb_tweet+=1
-            if(nb_actual%100==0):
-                print("En cours : " + str(nb_actual) + " tweets")
+            nb_actual+=1            
+            if(nb_actual%200==0):
+                print("En cours : " + str(nb_actual))
             if tweet.id not in id_list :
                 id_list.append(tweet.id)
                 all_tags = add_all_tags(tweet.user.username + tweet.content)
                 for tag in all_tags:
-                    tweets_dict[nb_tweet] = {"id" : tweet.id, "date" : tweet.date.date(), "content" :tweet.content, "like" : tweet.likeCount, "reply" : tweet.replyCount, "retweet" : (tweet.retweetCount + tweet.quoteCount),"username" : tweet.user.username, "tag" : tag}
-        print(str(nb_actual) + " tweets recupéré pour " + to_search)
+                    tweets_dict[nb_tweet] = {"id" : tweet.id, "date" : tweet.date.date(), "content" :tweet.content, "like" : tweet.likeCount, "reply" : tweet.replyCount, "retweet" : int(tweet.retweetCount + tweet.quoteCount),"username" : tweet.user.username, "tag" : tag}
+                    nb_tweet+=1
+        print(str(nb_actual) + ":" + str(nb_tweet))
         print()
         actual_search+=1
 
